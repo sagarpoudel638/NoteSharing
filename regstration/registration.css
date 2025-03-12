@@ -1,0 +1,105 @@
+/* General Styles */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: url('https://images.pexels.com/photos/1557251/pexels-photo-1557251.jpeg?cs=srgb&dl=pexels-photo-of-people-writing-on-notebook-1557251.jpg&fm=jpg') no-repeat center center fixed;
+  background-size: cover;
+  filter: brightness(85%); /* Dim the background for better readability */
+}
+
+/* Form Container */
+.container {
+  background-color: rgba(255, 255, 255, 0.95); /* Semi-transparent white */
+  border-radius: 15px;
+  padding: 40px;
+  max-width: 500px;
+  margin: 100px auto;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+/* Header */
+header {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Input Boxes */
+.input-box {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+}
+
+.column {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.column .input-box {
+  flex: 1;
+}
+
+.gender-box {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.gender-box h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #444;
+}
+
+.gender-option {
+  display: flex;
+  justify-content: space-between;
+}
+
+.gender {
+  display: flex;
+  align-items: center;
+}
+
+.gender input {
+  margin-right: 5px;
+}
+
+/* Button */
+button {
+  width: 100%;
+  padding: 14px;
+  font-size: 1.1rem;
+  color: white;
+  background-color: #6c63ff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  font-weight: 600;
+}
+
+button:hover {
+  background-color: #574bcc;
+}

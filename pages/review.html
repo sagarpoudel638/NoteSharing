@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Review Management - Admin Panel</title>
+  <link rel="stylesheet" href="./review.css" />
+</head>
+<body>
+  <header>
+    <h1>Note Reviews - Admin Panel</h1>
+    <nav>
+      <a href="./upload_form.html">Back to Notes</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h2>Reviews for Note ID: <span id="noteIdSpan"></span></h2>
+
+    <table border="1" id="reviewsTable">
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Rating</th>
+          <th>Review</th>
+          <th>Status</th>
+          <th>Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Reviews will populate here -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const noteId = urlParams.get('noteId');
+    document.getElementById('noteIdSpan').textContent = noteId;
+
+    // Load reviews for this noteId
+    window.onload = function() {
+      fetch(`adminreview.php?noteId=${noteId}`)
+        .then(response => response.json())
+        .then(data => {
+          const tableBody = document.querySelector('#reviewsTable tbody');
+          tableBody.innerHTML = ''; // Clear any previous rows
+
+          if (data.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="6">No reviews found for this note.</td></tr>';
+          }
+
+          data.forEach(review => {
+            const row = document.createElement('tr');
+            const statusText = review.approved === 1 ? 'Approved' : 'Disapproved'; // Ensure correct interpretation
+            row.id = `review-${review.id}`; // Add an ID to the row
+            row.innerHTML = `
+              <td>${review.user_name}</td>
+              <td>${review.rating} ⭐</td>
+              <td>${review.review}</td>
+              <td id="status-${review.id}">${statusText}</td>
+              <td>${review.created_at}</td>
+              <td>
+                <button onclick="updateReviewStatus(${review.id}, 'approved')">Approve</button>
+                <button onclick="updateReviewStatus(${review.id}, 'disapproved')">Disapprove</button>
+              </td>
+            `;
+            tableBody.appendChild(row);
+          });
+        })
+        .catch(error => console.error('Error loading reviews:', error));
+    }
+
+    // Function to approve/disapprove
+    function updateReviewStatus(reviewId, newStatus) {
+      fetch('reviewapproval.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reviewId, status: newStatus })
+      })
+      .then(response => response.json())
+      .then(result => {
+        alert(result.message);
+        
+        // After updating the status, update the row without reloading the page
+        const statusColumn = document.getElementById(`status-${reviewId}`);
+        const statusText = newStatus === 'approved' ? 'Approved' : 'Disapproved';
+        statusColumn.textContent = statusText;
+      })
+      .catch(error => console.error('Error updating review status:', error));
+    }
+  </script>
+</body>
+</html>
